@@ -39,7 +39,7 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
     }
 
     async sendMessage(message: MessageResponse): Promise<any | Failure> {
-        let response = await this.client.executeJson('sendMessage', message.toJson());
+        let response = await this.client.executeJson('sendMessage', message.toJsonString());
         if (response instanceof Failure) {
             return response;
         }

@@ -1,11 +1,11 @@
 import InlineKeyboardButton from "./inline_keyboard_button";
 
 // https://core.telegram.org/bots/api#inlinekeyboardmarkup
-class InlineKeyboardMarkup{
+class InlineKeyboardMarkup {
     inlineKeyboard: InlineKeyboardButton[][];
 
-    constructor(inlineKeyboard: InlineKeyboardButton[][]) {
-        this.inlineKeyboard = inlineKeyboard;
+    constructor(props: { inlineKeyboard: InlineKeyboardButton[][] }) {
+        this.inlineKeyboard = props.inlineKeyboard;
     }
 }
 

@@ -1,9 +1,10 @@
 import InlineKeyboardMarkup from "../../domain/entities/inline_keyboard_markup";
 import { Failure, FailureWrongStructure } from "../../../../core/failures";
 import InlineKeyboardButtonModel from "./inline_keyboard_button_model";
+import Serializable from "../../../../core/serializable";
 
 // https://core.telegram.org/bots/api#inlinekeyboardmarkup
-class InlineKeyboardMarkupModel extends InlineKeyboardMarkup {
+class InlineKeyboardMarkupModel extends InlineKeyboardMarkup implements Serializable {
     static fromJson(json: any): InlineKeyboardMarkupModel | Failure {
         if (!this.checkJson(json)) {
             return new FailureWrongStructure();
@@ -26,7 +27,7 @@ class InlineKeyboardMarkupModel extends InlineKeyboardMarkup {
             inlineKeyboard = [];
         }
 
-        return new InlineKeyboardMarkupModel(inlineKeyboard);
+        return new InlineKeyboardMarkupModel({ inlineKeyboard: inlineKeyboard });
     }
 
     private static checkJson(json: any): boolean {
@@ -35,6 +36,23 @@ class InlineKeyboardMarkupModel extends InlineKeyboardMarkup {
             typeof json === 'object' &&
             json.hasOwnProperty('inline_keyboard')
         );
+    }
+
+    toJsonString(): string {
+        return JSON.stringify(this.toJsonObject());
+    }
+
+    toJsonObject(): { [key: string]: any; } {
+        let keyboard = [];
+        for (let row of this.inlineKeyboard) {
+            keyboard.push([]);
+            for (let button of row) {
+                if (button instanceof InlineKeyboardButtonModel) {
+                    keyboard[keyboard.length - 1].push(button.toJsonObject());
+                }
+            }
+        }
+        return { inline_keyboard: keyboard };
     }
 }
 

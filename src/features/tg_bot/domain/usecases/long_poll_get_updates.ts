@@ -1,6 +1,5 @@
 import { UseCase, NoParams } from "../../../../core/usecases/usecase";
 import Update from "../entities/update";
-import Equatable from "../../../../core/equatable";
 import TelegramRepository from "../repositories/telegram_repostiry";
 import { Failure } from "../../../../core/failures";
 

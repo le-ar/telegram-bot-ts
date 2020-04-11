@@ -17,7 +17,7 @@ or
 ## Answer on text
 
 ```
-import { TelegramBot, Message, MessageResponse } from './index';
+import { TelegramBot, Message, MessageResponse } from 'telegram-bot-ts';
 
 let bot = new TelegramBot(<Your bot token here>);
 
@@ -34,7 +34,7 @@ bot.startLongPool();
 ## Receive callback from inline keyboard
 
 ```
-import { TelegramBot, Message, MessageResponse } from './index';
+import { TelegramBot, Message, MessageResponse } from 'telegram-bot-ts';
 
 let bot = new TelegramBot(<Your bot token here>);
 

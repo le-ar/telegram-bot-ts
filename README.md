@@ -47,3 +47,48 @@ bot.onText(function (callback: CallbackQuery) {
 
 bot.startLongPool();
 ```
+
+## Send keyboard
+
+```
+telegramBot.sendMessage(
+        new MessageResponse({
+            chatId: <chat id>,
+            text: <message text>,
+        }).setReplyMarkup(new ReplyKeyboardMarkupModel({
+            keyboard: [
+                [new KeyboardButtonModel({ text: '1' }), new KeyboardButtonModel({ text: '2' })],
+                [new KeyboardButtonModel({ text: message.text })],
+                [new KeyboardButtonModel({ text: 'location', requestLocation: true })],
+                [new KeyboardButtonModel({ text: 'contact', requestContact: true })]
+            ]
+        }))
+    );
+```
+
+## Send inline keyboard
+
+You must use exactly one of the optional fields.
+
+```
+    telegramBot.sendMessage(
+        new MessageResponse({
+            chatId: message.chat.id,
+            text: message.text,
+        }).setReplyMarkup(new InlineKeyboardMarkupModel({
+            inlineKeyboard: [
+                [new InlineKeyboardButtonModel({ text: '1', url: 'https://google.com' })],
+            ]
+        }))
+    );
+    telegramBot.sendMessage(
+        new MessageResponse({
+            chatId: message.chat.id,
+            text: message.text,
+        }).setReplyMarkup(new InlineKeyboardMarkupModel({
+            inlineKeyboard: [
+                [new InlineKeyboardButtonModel({ text: '2', callbackData: 'hihih-hi' })],
+            ]
+        }))
+    );
+```

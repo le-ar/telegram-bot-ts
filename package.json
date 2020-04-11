@@ -1,0 +1,14 @@
+{
+  "name": "telegram-bot-ts",
+  "version": "0.0.0",
+  "description": "Typescript, Node.js module for Telegram Bot API (https://core.telegram.org/bots/api)",
+  "main": "index.ts",
+  "types": "lib/index.d.ts",
+  "repository": "https://github.com/le-ar/telegram-bot-ts",
+  "author": "le-ar",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+
+  }
+}

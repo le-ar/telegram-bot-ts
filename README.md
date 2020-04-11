@@ -34,7 +34,7 @@ bot.startLongPool();
 ## Receive callback from inline keyboard
 
 ```
-import { TelegramBot, Message, MessageResponse } from 'telegram-bot-ts';
+import { TelegramBot, CallbackQuery, MessageResponse } from 'telegram-bot-ts';
 
 let bot = new TelegramBot(<Your bot token here>);
 

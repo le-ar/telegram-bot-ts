@@ -73,16 +73,16 @@ class MessageResponse {
             json['reply_to_message_id'] = this.replyToMessageId;
         }
         if (this.replyMarkup instanceof InlineKeyboardMarkup) {
-            json['reply_markup'] = InlineKeyboardMarkupSerializer.toJsonString(this.replyMarkup);
+            json['reply_markup'] = InlineKeyboardMarkupSerializer.toJsonObject(this.replyMarkup);
         }
         if (this.replyMarkup instanceof ReplyKeyboardMarkup) {
-            json['reply_markup'] = ReplyKeyboardMarkupSerializer.toJsonString(this.replyMarkup);
+            json['reply_markup'] = ReplyKeyboardMarkupSerializer.toJsonObject(this.replyMarkup);
         }
         if (this.replyMarkup instanceof ReplyKeyboardRemove) {
-            json['reply_markup'] = ReplyKeyboardRemoveSerializer.toJsonString(this.replyMarkup);
+            json['reply_markup'] = ReplyKeyboardRemoveSerializer.toJsonObject(this.replyMarkup);
         }
         if (this.replyMarkup instanceof ForceReply) {
-            json['reply_markup'] = ForceReplySerializer.toJsonString(this.replyMarkup);
+            json['reply_markup'] = ForceReplySerializer.toJsonObject(this.replyMarkup);
         }
 
         return json;

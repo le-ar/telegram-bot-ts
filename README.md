@@ -22,10 +22,10 @@ import { TelegramBot, Message, MessageResponse } from 'telegram-bot-ts';
 let bot = new TelegramBot(<Your bot token here>);
 
 bot.onText(function (message: Message) {
-    bot.sendMessage(new MessageResponse(
-        message.chat.id,
-        message.text
-    ));
+    bot.sendMessage(new MessageResponse({
+        chatId: message.chat.id,
+        text: message.text
+    }));
 });
 
 bot.startLongPool();
@@ -39,10 +39,10 @@ import { TelegramBot, CallbackQuery, MessageResponse } from 'telegram-bot-ts';
 let bot = new TelegramBot(<Your bot token here>);
 
 bot.onText(function (callback: CallbackQuery) {
-    bot.sendMessage(new MessageResponse(
-        message.chat.id,
-        'callback received'
-    ));
+    bot.sendMessage(new MessageResponse({
+        chatId: message.chat.id,
+        text: 'callback received'
+    }));
 });
 
 bot.startLongPool();

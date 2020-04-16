@@ -1,5 +1,5 @@
 import { UseCase, NoParams } from "../../../../core/usecases/usecase";
-import { Update } from "telegram-bot-ts-types";
+import { Update, GetUpdatesParam, GetUpdatesParamSerializer } from "telegram-bot-ts-types";
 import TelegramRepository from "../repositories/telegram_repostiry";
 import { Failure } from "../../../../core/failures";
 
@@ -23,7 +23,7 @@ class LongPollGetUpdates extends UseCase<Update[], Params> {
     }
 
     private async executeWithUpdate(): Promise<Update[] | Failure> {
-        let updates = await this.telegramRepository.getUpdates(this.lastOffset);
+        let updates = await this.telegramRepository.getUpdates(new GetUpdatesParam({ offset: this.lastOffset }));
         if (updates instanceof Failure) {
             return updates;
         }
@@ -34,7 +34,7 @@ class LongPollGetUpdates extends UseCase<Update[], Params> {
     }
 
     private async executeWithoutParams(offset: number): Promise<Update[] | Failure> {
-        let updates = await this.telegramRepository.getUpdates(offset);
+        let updates = await this.telegramRepository.getUpdates(new GetUpdatesParam({ offset: offset }));
 
         return updates;
     }

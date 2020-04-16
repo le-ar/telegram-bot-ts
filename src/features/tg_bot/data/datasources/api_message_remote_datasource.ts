@@ -1,11 +1,10 @@
 import { Failure, FailureApi } from "../../../../core/failures";
 import { ApiClient } from "./telegram_client";
-import MessageResponse from "../models/message_response";
-import { Update, UpdateSerializer } from "telegram-bot-ts-types";
+import { Update, UpdateSerializer, SendMessageParam, SendMessageParamSerializer, GetUpdatesParam, GetUpdatesParamSerializer } from "telegram-bot-ts-types";
 
 interface ApiMessageRemoteDatasource {
-    getUpdates(offset: number): Promise<Update[] | Failure>;
-    sendMessage(message: MessageResponse): Promise<any | Failure>;
+    getUpdates(params: GetUpdatesParam): Promise<Update[] | Failure>;
+    sendMessage(message: SendMessageParam): Promise<any | Failure>;
 }
 
 class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
@@ -15,8 +14,8 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
         this.client = client;
     }
 
-    public async getUpdates(offset: number): Promise<Update[] | Failure> {
-        let response = await this.client.execute('getUpdates', { offset: offset });
+    public async getUpdates(params: GetUpdatesParam): Promise<Update[] | Failure> {
+        let response = await this.client.execute('getUpdates', GetUpdatesParamSerializer.toFormData(params));
         if (response instanceof Failure) {
             return response;
         }
@@ -37,8 +36,8 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
         return updates;
     }
 
-    async sendMessage(message: MessageResponse): Promise<any | Failure> {
-        let response = await this.client.executeJson('sendMessage', message.toJsonString());
+    async sendMessage(message: SendMessageParam): Promise<any | Failure> {
+        let response = await this.client.execute('sendMessage', SendMessageParamSerializer.toFormData(message));
         if (response instanceof Failure) {
             return response;
         }

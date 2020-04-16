@@ -10,8 +10,7 @@ import { GetMe } from "./domain/usecases/get_me";
 import { Failure, FailureUnauthorized } from "../../core/failures";
 import { NoParams } from "../../core/usecases/usecase";
 import { SendMessage } from "./domain/usecases/send_message";
-import { Message, CallbackQuery } from "telegram-bot-ts-types";
-import MessageResponse from "./data/models/message_response";
+import { Message, CallbackQuery, SendMessageParam } from "telegram-bot-ts-types";
 
 class TelegramBot {
     private telegramPublisher: TelegramPublisher;
@@ -88,7 +87,7 @@ class TelegramBot {
         this.telegramPublisher.subscribe(telegramCallbackSubscriber);
     }
 
-    async sendMessage(message: MessageResponse) {
+    async sendMessage(message: SendMessageParam) {
         return await this.sendMessageUseCase.execute(message);
     }
 }

@@ -1,10 +1,10 @@
-import fetch from "node-fetch";
+import fetch, { Response } from "node-fetch";
 import { Failure, FailureApi, FailureUnauthorized } from "../../../../core/failures";
+import FormData from "formdata-node";
 
 interface ApiClient {
     token: string;
     execute(command: string, params?: { [key: string]: any }): Promise<string | Failure>;
-    executeJson(command: string, paramsJson?: string): Promise<string | Failure>;
 }
 
 class TelegramApiClient implements ApiClient {
@@ -14,31 +14,13 @@ class TelegramApiClient implements ApiClient {
         this.token = encodeURI(token);
     }
 
-    async executeJson(command: string, paramsJson?: string): Promise<string | Failure> {
-        let response = await fetch(
-            'https://api.telegram.org/bot' + this.token + '/' + command,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: paramsJson
-            }
-        );
-
-        if (response.status !== 200) {
-            if (response.status === 401) {
-                return new FailureUnauthorized(await response.text());
-            }
-            return new FailureApi(await response.text());
-        }
-        return await response.json();
-    }
-
-    async execute(command: string, params?: { [key: string]: string }): Promise<string | Failure> {
-        let encodedParams = this.encodeParams(params);
-
-        let response = await fetch('https://api.telegram.org/bot' + this.token + '/' + command + '?' + encodedParams);
+    async execute(command: string, paramsFormData?: FormData): Promise<string | Failure> {
+        let response = await fetch('https://api.telegram.org/bot' + this.token + '/' + command,
+        {
+            method: 'POST',
+            headers: paramsFormData ? paramsFormData.headers : { 'Content-Type': 'application/json' },
+            body: paramsFormData ? paramsFormData.stream : '',
+        });
 
         if (response.status !== 200) {
             if (response.status === 401) {

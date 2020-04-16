@@ -1,12 +1,11 @@
 import { ApiMessageRemoteDatasource } from "../../data/datasources/api_message_remote_datasource";
 import { Failure } from "../../../../core/failures";
-import { Update, User } from "telegram-bot-ts-types";
-import MessageResponse from "../../data/models/message_response";
+import { Update, User, SendMessageParam, GetUpdatesParam } from "telegram-bot-ts-types";
 
 interface TelegramRepository {
-    getUpdates(offset: number): Promise<Update[] | Failure>;
+    getUpdates(params: GetUpdatesParam): Promise<Update[] | Failure>;
     getMe(): Promise<User | Failure>;
-    sendMessage(message: MessageResponse): Promise<any | Failure>;
+    sendMessage(message: SendMessageParam): Promise<any | Failure>;
 }
 
 export default TelegramRepository;

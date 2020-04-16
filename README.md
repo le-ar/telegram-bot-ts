@@ -50,7 +50,7 @@ bot.startLongPool();
 
 ## Send keyboard
 
-```
+```typescript
 telegramBot.sendMessage(
         new MessageResponse({
             chatId: <chat id>,
@@ -70,25 +70,69 @@ telegramBot.sendMessage(
 
 You must use exactly one of the optional fields.
 
-```
+```typescript
     telegramBot.sendMessage(
         new MessageResponse({
-            chatId: message.chat.id,
-            text: message.text,
+            chatId: <chat id>,
+            text: <message text>,
         }).setReplyMarkup(new InlineKeyboardMarkupModel({
             inlineKeyboard: [
-                [new InlineKeyboardButtonModel({ text: '1', url: 'https://google.com' })],
+                [new InlineKeyboardButtonModel({ text: 'urlButton', url: 'https://google.com' })],
             ]
         }))
     );
     telegramBot.sendMessage(
         new MessageResponse({
-            chatId: message.chat.id,
-            text: message.text,
+            chatId: <chat id>,
+            text: <message text>,
         }).setReplyMarkup(new InlineKeyboardMarkupModel({
             inlineKeyboard: [
-                [new InlineKeyboardButtonModel({ text: '2', callbackData: 'hihih-hi' })],
+                [new InlineKeyboardButtonModel({ text: 'callbackButton', callbackData: 'hello' })],
             ]
         }))
+    );
+```
+
+## Send Animation
+
+You can set animation as InputFile or String (url or file_id) https://core.telegram.org/bots/api#sendanimation
+
+```typescript
+    bot.sendAnimation(
+        new SendAnimationParam({
+            chatId: <chat id>,
+            animation: new InputFile('name.mp4', fs.readFileSync('name.mp4')),
+        })
+    );
+```
+
+```typescript
+    bot.sendAnimation(
+        new SendAnimationParam({
+            chatId: <chat id>,
+            animation: "some URL or File ID",
+        })
+    );
+```
+
+## Send Video
+
+You can set animation as InputFile or String (url or file_id) https://core.telegram.org/bots/api#sendvideo
+
+```typescript
+    bot.sendVideo(
+        new SendVideoParam({
+            chatId: <chat id>,
+            video: new InputFile('name.mp4', fs.readFileSync('name.mp4')),
+        })
+    );
+```
+
+```typescript
+    bot.sendVideo(
+        new SendVideoParam({
+            chatId: <chat id>,
+            video: "some URL or File ID",
+        })
     );
 ```

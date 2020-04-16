@@ -10,12 +10,19 @@ import { GetMe } from "./domain/usecases/get_me";
 import { Failure, FailureUnauthorized } from "../../core/failures";
 import { NoParams } from "../../core/usecases/usecase";
 import { SendMessage } from "./domain/usecases/send_message";
-import { Message, CallbackQuery, SendMessageParam } from "telegram-bot-ts-types";
+import { Message, CallbackQuery, SendMessageParam, SendPhotoParam, SendAnimationParam, SendVideoParam } from "telegram-bot-ts-types";
+import { SendPhoto } from "./domain/usecases/send_photo";
+import { SendAnimation } from "./domain/usecases/send_animation";
+import { SendVideo } from "./domain/usecases/send_video";
 
 class TelegramBot {
     private telegramPublisher: TelegramPublisher;
 
+    private sendPhotoUseCase: SendPhoto;
     private sendMessageUseCase: SendMessage;
+    private sendAnimationUseCase: SendAnimation;
+    private sendVideoUseCase: SendVideo;
+
     private longPollGetUpdates: LongPollGetUpdates;
     private getMe: GetMe;
 
@@ -40,6 +47,9 @@ class TelegramBot {
         this.longPollGetUpdates = new LongPollGetUpdates(telegramRepository, 0);
         this.getMe = new GetMe(telegramRepository);
         this.sendMessageUseCase = new SendMessage(telegramRepository);
+        this.sendPhotoUseCase = new SendPhoto(telegramRepository);
+        this.sendAnimationUseCase = new SendAnimation(telegramRepository);
+        this.sendVideoUseCase = new SendVideo(telegramRepository);
 
         this.telegramPublisher = new TelegramPublisher();
     }
@@ -89,6 +99,18 @@ class TelegramBot {
 
     async sendMessage(message: SendMessageParam) {
         return await this.sendMessageUseCase.execute(message);
+    }
+
+    async sendPhoto(message: SendPhotoParam) {
+        return await this.sendPhotoUseCase.execute(message);
+    }
+
+    async sendAnimation(message: SendAnimationParam) {
+        return await this.sendAnimationUseCase.execute(message);
+    }
+
+    async sendVideo(message: SendVideoParam) {
+        return await this.sendVideoUseCase.execute(message);
     }
 }
 

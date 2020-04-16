@@ -1,10 +1,13 @@
 import { Failure, FailureApi } from "../../../../core/failures";
 import { ApiClient } from "./telegram_client";
-import { Update, UpdateSerializer, SendMessageParam, SendMessageParamSerializer, GetUpdatesParam, GetUpdatesParamSerializer } from "telegram-bot-ts-types";
+import { Update, UpdateSerializer, SendMessageParam, SendMessageParamSerializer, GetUpdatesParam, GetUpdatesParamSerializer, SendPhotoParam, SendPhotoParamSerializer, SendAnimationParam, SendAnimationParamSerializer, SendVideoParam, SendVideoParamSerializer } from "telegram-bot-ts-types";
 
 interface ApiMessageRemoteDatasource {
     getUpdates(params: GetUpdatesParam): Promise<Update[] | Failure>;
     sendMessage(message: SendMessageParam): Promise<any | Failure>;
+    sendPhoto(message: SendPhotoParam): Promise<any | Failure>;
+    sendAnimation(message: SendAnimationParam): Promise<any | Failure>;
+    sendVideo(message: SendVideoParam): Promise<any | Failure>;
 }
 
 class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
@@ -38,6 +41,45 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
 
     async sendMessage(message: SendMessageParam): Promise<any | Failure> {
         let response = await this.client.execute('sendMessage', SendMessageParamSerializer.toFormData(message));
+        if (response instanceof Failure) {
+            return response;
+        }
+
+        if (!this.checkResponse(response)) {
+            return new FailureApi();
+        }
+
+        return response['result'];
+    }
+
+    async sendAnimation(message: SendAnimationParam): Promise<any | Failure> {
+        let response = await this.client.execute('sendAnimation', SendAnimationParamSerializer.toFormData(message));
+        if (response instanceof Failure) {
+            return response;
+        }
+
+        if (!this.checkResponse(response)) {
+            return new FailureApi();
+        }
+
+        return response['result'];
+    }
+
+    async sendPhoto(message: SendPhotoParam): Promise<any | Failure> {
+        let response = await this.client.execute('sendPhoto', SendPhotoParamSerializer.toFormData(message));
+        if (response instanceof Failure) {
+            return response;
+        }
+
+        if (!this.checkResponse(response)) {
+            return new FailureApi();
+        }
+
+        return response['result'];
+    }
+
+    async sendVideo(message: SendVideoParam): Promise<any | Failure> {
+        let response = await this.client.execute('sendVideo', SendVideoParamSerializer.toFormData(message));
         if (response instanceof Failure) {
             return response;
         }

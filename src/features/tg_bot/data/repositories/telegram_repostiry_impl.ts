@@ -1,7 +1,7 @@
 import { ApiMessageRemoteDatasource } from "../datasources/api_message_remote_datasource";
 import { Failure } from "../../../../core/failures";
 import TelegramRepository from "../../domain/repositories/telegram_repostiry";
-import { Update, User, SendMessageParam, GetUpdatesParam } from "telegram-bot-ts-types";
+import { Update, User, SendMessageParam, GetUpdatesParam, SendPhotoParam, SendAnimationParam, SendVideoParam } from "telegram-bot-ts-types";
 import { ApiUserRemoteDatasource } from "../datasources/api_user_remote_datasource";
 
 class TelegramRepositoryImpl implements TelegramRepository {
@@ -26,6 +26,18 @@ class TelegramRepositoryImpl implements TelegramRepository {
 
     public async sendMessage(message: SendMessageParam): Promise<any | Failure> {
         return await this.apiMessageRemoteDatasource.sendMessage(message);
+    }
+
+    public async sendPhoto(message: SendPhotoParam): Promise<any | Failure> {
+        return await this.apiMessageRemoteDatasource.sendPhoto(message);
+    }
+
+    public async sendAnimation(message: SendAnimationParam): Promise<any | Failure> {
+        return await this.apiMessageRemoteDatasource.sendAnimation(message);
+    }
+
+    public async sendVideo(message: SendVideoParam): Promise<any | Failure> {
+        return await this.apiMessageRemoteDatasource.sendVideo(message);
     }
 }
 

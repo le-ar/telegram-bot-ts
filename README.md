@@ -136,3 +136,13 @@ You can set animation as InputFile or String (url or file_id) https://core.teleg
         })
     );
 ```
+
+## Edit Message Text
+
+```typescript
+    bot.editMessageText(new EditMessageTextParam({
+        text: 'new Text',
+        chatId: <chat Id>,
+        messageId: <message id>
+    }));
+```

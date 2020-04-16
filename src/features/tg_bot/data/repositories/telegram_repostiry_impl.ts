@@ -1,7 +1,7 @@
 import { ApiMessageRemoteDatasource } from "../datasources/api_message_remote_datasource";
 import { Failure } from "../../../../core/failures";
 import TelegramRepository from "../../domain/repositories/telegram_repostiry";
-import { Update, User, SendMessageParam, GetUpdatesParam, SendPhotoParam, SendAnimationParam, SendVideoParam, EditMessageTextParam } from "telegram-bot-ts-types";
+import { Update, User, SendMessageParam, GetUpdatesParam, SendPhotoParam, SendAnimationParam, SendVideoParam, EditMessageTextParam, EditMessageReplyMarkupParam } from "telegram-bot-ts-types";
 import { ApiUserRemoteDatasource } from "../datasources/api_user_remote_datasource";
 
 class TelegramRepositoryImpl implements TelegramRepository {
@@ -42,6 +42,10 @@ class TelegramRepositoryImpl implements TelegramRepository {
 
     public async editMessageText(message: EditMessageTextParam): Promise<any | Failure> {
         return await this.apiMessageRemoteDatasource.editMessageText(message);
+    }
+
+    public async editMessageReplyMarkup(message: EditMessageReplyMarkupParam): Promise<any | Failure> {
+        return await this.apiMessageRemoteDatasource.editMessageReplyMarkup(message);
     }
 }
 

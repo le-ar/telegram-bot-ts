@@ -10,11 +10,12 @@ import { GetMe } from "./domain/usecases/get_me";
 import { Failure, FailureUnauthorized } from "../../core/failures";
 import { NoParams } from "../../core/usecases/usecase";
 import { SendMessage } from "./domain/usecases/send_message";
-import { Message, CallbackQuery, SendMessageParam, SendPhotoParam, SendAnimationParam, SendVideoParam, EditMessageTextParam } from "telegram-bot-ts-types";
+import { Message, CallbackQuery, SendMessageParam, SendPhotoParam, SendAnimationParam, SendVideoParam, EditMessageTextParam, EditMessageReplyMarkupParam } from "telegram-bot-ts-types";
 import { SendPhoto } from "./domain/usecases/send_photo";
 import { SendAnimation } from "./domain/usecases/send_animation";
 import { SendVideo } from "./domain/usecases/send_video";
 import { EditMessageText } from "./domain/usecases/edit_message_text";
+import { EditMessageReplyMarkup } from "./domain/usecases/edit_message_reply_markup";
 
 class TelegramBot {
     private telegramPublisher: TelegramPublisher;
@@ -24,6 +25,7 @@ class TelegramBot {
     private sendAnimationUseCase: SendAnimation;
     private sendVideoUseCase: SendVideo;
     private editMessageTextUseCase: EditMessageText;
+    private editMessageReplyMarkupUseCase: EditMessageReplyMarkup;
 
     private longPollGetUpdates: LongPollGetUpdates;
     private getMe: GetMe;
@@ -53,6 +55,7 @@ class TelegramBot {
         this.sendAnimationUseCase = new SendAnimation(telegramRepository);
         this.sendVideoUseCase = new SendVideo(telegramRepository);
         this.editMessageTextUseCase = new EditMessageText(telegramRepository);
+        this.editMessageReplyMarkupUseCase = new EditMessageReplyMarkup(telegramRepository);
 
         this.telegramPublisher = new TelegramPublisher();
     }
@@ -118,6 +121,10 @@ class TelegramBot {
 
     async editMessageText(message: EditMessageTextParam) {
         return await this.editMessageTextUseCase.execute(message);
+    }
+
+    async editMessageReplyMarkup(message: EditMessageReplyMarkupParam) {
+        return await this.editMessageReplyMarkupUseCase.execute(message);
     }
 }
 

@@ -146,3 +146,18 @@ You can set animation as InputFile or String (url or file_id) https://core.teleg
         messageId: <message id>
     }));
 ```
+
+## Edit Inline Keyboard
+
+```typescript
+    bot.editMessageReplyMarkup(new EditMessageReplyMarkupParam({
+        chatId: <chat Id>,
+        messageId: <message id>,
+        replyMarkup: new InlineKeyboardMarkup({
+            inlineKeyboard: [
+                [new InlineKeyboardButton({ text: 'text a', callbackData: 'callback_a' }), new InlineKeyboardButton({ text: 'text_b', callbackData: 'callback_b' })],
+                [new InlineKeyboardButton({ text: 'text_c', callbackData: 'callback_c' })]
+            ],
+        }),
+    }));
+```

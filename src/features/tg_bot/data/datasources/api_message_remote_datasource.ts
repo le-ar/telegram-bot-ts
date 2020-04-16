@@ -1,6 +1,6 @@
 import { Failure, FailureApi } from "../../../../core/failures";
 import { ApiClient } from "./telegram_client";
-import { Update, UpdateSerializer, SendMessageParam, SendMessageParamSerializer, GetUpdatesParam, GetUpdatesParamSerializer, SendPhotoParam, SendPhotoParamSerializer, SendAnimationParam, SendAnimationParamSerializer, SendVideoParam, SendVideoParamSerializer, EditMessageTextParam, EditMessageTextParamSerializer, MessageSerializer, Message } from "telegram-bot-ts-types";
+import { Update, UpdateSerializer, SendMessageParam, SendMessageParamSerializer, GetUpdatesParam, GetUpdatesParamSerializer, SendPhotoParam, SendPhotoParamSerializer, SendAnimationParam, SendAnimationParamSerializer, SendVideoParam, SendVideoParamSerializer, EditMessageTextParam, EditMessageTextParamSerializer, MessageSerializer, Message, EditMessageReplyMarkupParam, EditMessageReplyMarkupParamSerializer } from "telegram-bot-ts-types";
 
 interface ApiMessageRemoteDatasource {
     getUpdates(params: GetUpdatesParam): Promise<Update[] | Failure>;
@@ -9,6 +9,7 @@ interface ApiMessageRemoteDatasource {
     sendAnimation(message: SendAnimationParam): Promise<any | Failure>;
     sendVideo(message: SendVideoParam): Promise<any | Failure>;
     editMessageText(message: EditMessageTextParam): Promise<any | Failure>;
+    editMessageReplyMarkup(message: EditMessageReplyMarkupParam): Promise<any | Failure>;
 }
 
 class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
@@ -94,6 +95,19 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
 
     async editMessageText(message: EditMessageTextParam): Promise<Message | Failure> {
         let response = await this.client.execute('editMessageText', EditMessageTextParamSerializer.toFormData(message));
+        if (response instanceof Failure) {
+            return response;
+        }
+
+        if (!this.checkResponse(response)) {
+            return new FailureApi();
+        }
+
+        return MessageSerializer.fromJson(JSON.parse(response)['result']);
+    }
+
+    async editMessageReplyMarkup(message: EditMessageReplyMarkupParam): Promise<Message | Failure> {
+        let response = await this.client.execute('editMessageReplyMarkup', EditMessageReplyMarkupParamSerializer.toFormData(message));
         if (response instanceof Failure) {
             return response;
         }

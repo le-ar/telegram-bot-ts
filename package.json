@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "@types/node-fetch": "^2.5.6",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "telegram-bot-ts-types": "^1.2.1"
   },
   "devDependencies": {
     "jest": "^25.2.4",

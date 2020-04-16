@@ -1,5 +1,5 @@
 import TelegramSubscriber from "../subscribers/telegram_subscriber";
-import Update from "../../../domain/entities/update";
+import { Update } from "telegram-bot-ts-types";
 
 class TelegramPublisher {
     private subscribers: TelegramSubscriber[] = [];
@@ -10,7 +10,7 @@ class TelegramPublisher {
 
     unsubscribe(telegramSubscriber: TelegramSubscriber) {
         let index = this.subscribers.indexOf(telegramSubscriber);
-        
+
         if (index !== -1) {
             this.subscribers.splice(index, 1);
         }

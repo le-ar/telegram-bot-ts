@@ -1,7 +1,5 @@
-import Message from "./domain/entities/message";
 import TelegramTextSubscriber from "./presentation/pubsub/subscribers/telegram_text_subscriber";
 import TelegramCallbackSubscriber from "./presentation/pubsub/subscribers/telegram_callback_subscriber";
-import CallbackQuery from "./domain/entities/callback_query";
 import TelegramPublisher from "./presentation/pubsub/publishers/telegram_publisher";
 import { TelegramApiClient } from "./data/datasources/telegram_client";
 import { ApiUserRemoteDatasourceImpl } from "./data/datasources/api_user_remote_datasource";
@@ -12,6 +10,7 @@ import { GetMe } from "./domain/usecases/get_me";
 import { Failure, FailureUnauthorized } from "../../core/failures";
 import { NoParams } from "../../core/usecases/usecase";
 import { SendMessage } from "./domain/usecases/send_message";
+import { Message, CallbackQuery } from "telegram-bot-ts-types";
 import MessageResponse from "./data/models/message_response";
 
 class TelegramBot {
@@ -60,14 +59,14 @@ class TelegramBot {
         }
 
         let countErrors = 0;
-        while(true) {
+        while (true) {
             let updates = await this.longPollGetUpdates.execute(new NoParams());
             if (updates instanceof Failure) {
                 countErrors++;
                 if (countErrors > 9) {
                     throw new Error(updates.getMessage());
                 }
-                
+
                 continue;
             }
 

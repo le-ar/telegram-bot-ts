@@ -1,8 +1,7 @@
 import { ApiMessageRemoteDatasource } from "../datasources/api_message_remote_datasource";
 import { Failure } from "../../../../core/failures";
 import TelegramRepository from "../../domain/repositories/telegram_repostiry";
-import Update from "../../domain/entities/update";
-import User from "../../domain/entities/user";
+import { Update, User } from "telegram-bot-ts-types";
 import { ApiUserRemoteDatasource } from "../datasources/api_user_remote_datasource";
 import MessageResponse from "../models/message_response";
 

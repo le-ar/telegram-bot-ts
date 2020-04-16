@@ -1,10 +1,2 @@
 export { default as TelegramBot } from './src/features/tg_bot/telegram_bot';
-export { default as MessageResponse } from './src/features/tg_bot/data/models/message_response';
-export { default as Message } from './src/features/tg_bot/domain/entities/message';
-export { default as CallbackQuery } from './src/features/tg_bot/domain/entities/callback_query';
-export { default as ReplyKeyboardMarkupModel } from './src/features/tg_bot/data/models/reply_keyboard_markup_model';
-export { default as KeyboardButtonModel } from './src/features/tg_bot/data/models/keyboard_button_model';
-export { default as InlineKeyboardMarkupModel } from './src/features/tg_bot/data/models/inline_keyboard_markup_model';
-export { default as InlineKeyboardButtonModel } from './src/features/tg_bot/data/models/inline_keyboard_button_model';
-export { default as ReplyKeyboardRemoveModel } from './src/features/tg_bot/data/models/reply_keyboard_remove_model';
-export { default as ForceReplyModel } from './src/features/tg_bot/data/models/force_reply_model';
+export * from 'telegram-bot-ts-types';

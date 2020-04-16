@@ -1,11 +1,10 @@
-import MessageModel from "../models/message_model";
 import { Failure, FailureApi } from "../../../../core/failures";
 import { ApiClient } from "./telegram_client";
-import UpdateModel from "../models/update_model";
 import MessageResponse from "../models/message_response";
+import { Update, UpdateSerializer } from "telegram-bot-ts-types";
 
 interface ApiMessageRemoteDatasource {
-    getUpdates(offset: number): Promise<UpdateModel[] | Failure>;
+    getUpdates(offset: number): Promise<Update[] | Failure>;
     sendMessage(message: MessageResponse): Promise<any | Failure>;
 }
 
@@ -16,7 +15,7 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
         this.client = client;
     }
 
-    public async getUpdates(offset: number): Promise<UpdateModel[] | Failure> {
+    public async getUpdates(offset: number): Promise<Update[] | Failure> {
         let response = await this.client.execute('getUpdates', { offset: offset });
         if (response instanceof Failure) {
             return response;
@@ -27,10 +26,10 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
         }
 
         let jsonResponse = JSON.parse(response)['result'];
-        let updates: UpdateModel[] = [];
+        let updates: Update[] = [];
         for (let update of jsonResponse) {
-            let updateModel = UpdateModel.fromJson(update);
-            if (updateModel instanceof UpdateModel) {
+            let updateModel = UpdateSerializer.fromJson(update);
+            if (updateModel instanceof Update) {
                 updates.push(updateModel);
             }
         }

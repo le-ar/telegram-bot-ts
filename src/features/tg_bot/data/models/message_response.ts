@@ -1,19 +1,13 @@
-import InlineKeyboardMarkupModel from "./inline_keyboard_markup_model";
-import InlineKeyboardButtonModel from "./inline_keyboard_button_model";
-import ReplyKeyboardMarkup from "../../domain/entities/reply_keyboard_markup";
-import ReplyKeyboardRemoveModel from "./reply_keyboard_remove_model";
-import ForceReplyModel from "./force_reply_model";
-import Serializable from "../../../../core/serializable";
-import ReplyKeyboardMarkupModel from "./reply_keyboard_markup_model";
+import { InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, InlineKeyboardMarkupSerializer, ReplyKeyboardMarkupSerializer, ReplyKeyboardRemoveSerializer, ForceReplySerializer } from "telegram-bot-ts-types";
 
-class MessageResponse implements Serializable {
+class MessageResponse {
     chatId: number | string;
     text: string;
     parseMode?: string; //MarkdownV2 or HTML
     disableWebPagePreview?: boolean;
     disableNotification?: boolean;
     replyToMessageId?: number;
-    replyMarkup?: InlineKeyboardMarkupModel | ReplyKeyboardMarkup | ReplyKeyboardRemoveModel | ForceReplyModel;
+    replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 
     constructor(props: {
         chatId: number | string;
@@ -22,7 +16,7 @@ class MessageResponse implements Serializable {
         disableWebPagePreview?: boolean;
         disableNotification?: boolean;
         replyToMessageId?: number;
-        replyMarkup?: InlineKeyboardMarkupModel | ReplyKeyboardMarkup | ReplyKeyboardRemoveModel | ForceReplyModel;
+        replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
     }) {
         this.chatId = props.chatId;
         this.text = props.text;
@@ -47,7 +41,7 @@ class MessageResponse implements Serializable {
         return this;
     }
 
-    setReplyMarkup(replyMarkup: InlineKeyboardMarkupModel | ReplyKeyboardMarkup | ReplyKeyboardRemoveModel | ForceReplyModel): MessageResponse {
+    setReplyMarkup(replyMarkup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply): MessageResponse {
         this.replyMarkup = replyMarkup;
         return this;
     }
@@ -78,11 +72,17 @@ class MessageResponse implements Serializable {
         if (typeof this.replyToMessageId === 'number') {
             json['reply_to_message_id'] = this.replyToMessageId;
         }
-        if (this.replyMarkup instanceof InlineKeyboardMarkupModel ||
-            this.replyMarkup instanceof ReplyKeyboardMarkupModel ||
-            this.replyMarkup instanceof ReplyKeyboardRemoveModel ||
-            this.replyMarkup instanceof ForceReplyModel) {
-            json['reply_markup'] = this.replyMarkup.toJsonObject();
+        if (this.replyMarkup instanceof InlineKeyboardMarkup) {
+            json['reply_markup'] = InlineKeyboardMarkupSerializer.toJsonString(this.replyMarkup);
+        }
+        if (this.replyMarkup instanceof ReplyKeyboardMarkup) {
+            json['reply_markup'] = ReplyKeyboardMarkupSerializer.toJsonString(this.replyMarkup);
+        }
+        if (this.replyMarkup instanceof ReplyKeyboardRemove) {
+            json['reply_markup'] = ReplyKeyboardRemoveSerializer.toJsonString(this.replyMarkup);
+        }
+        if (this.replyMarkup instanceof ForceReply) {
+            json['reply_markup'] = ForceReplySerializer.toJsonString(this.replyMarkup);
         }
 
         return json;

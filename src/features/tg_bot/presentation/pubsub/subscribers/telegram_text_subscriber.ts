@@ -1,6 +1,5 @@
-import Update from "../../../domain/entities/update";
+import { Update, Message } from "telegram-bot-ts-types";
 import TelegramSubscriber from "./telegram_subscriber";
-import Message from "../../../domain/entities/message";
 
 class TelegramTextSubscriber implements TelegramSubscriber {
     callback: (message: Message) => void;

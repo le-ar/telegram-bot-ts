@@ -1,7 +1,7 @@
 import { UseCase, NoParams } from "../../../../core/usecases/usecase";
 import TelegramRepository from "../repositories/telegram_repostiry";
 import { Failure } from "../../../../core/failures";
-import User from "../entities/user";
+import { User } from "telegram-bot-ts-types";
 
 class GetMe extends UseCase<any, NoParams> {
     telegramRepository: TelegramRepository;

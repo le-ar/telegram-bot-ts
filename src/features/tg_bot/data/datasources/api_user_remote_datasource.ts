@@ -1,8 +1,6 @@
-import User from "../../domain/entities/user";
 import { Failure, FailureApi } from "../../../../core/failures";
-import fetch from 'node-fetch';
 import { ApiClient } from "./telegram_client";
-import UserModel from "../models/user_model";
+import { User, UserSerializer } from "telegram-bot-ts-types";
 
 interface ApiUserRemoteDatasource {
     getMe(): Promise<User | Failure>
@@ -35,7 +33,7 @@ class ApiUserRemoteDatasourceImpl implements ApiUserRemoteDatasource {
         }
 
         let jsonResponse = JSON.parse(response)['result'];
-        let userModel = UserModel.fromJson(jsonResponse);
+        let userModel = UserSerializer.fromJson(jsonResponse);
         return userModel;
     }
 }

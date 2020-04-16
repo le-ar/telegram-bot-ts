@@ -1,6 +1,6 @@
 import { Failure, FailureApi } from "../../../../core/failures";
 import { ApiClient } from "./telegram_client";
-import { Update, UpdateSerializer, SendMessageParam, SendMessageParamSerializer, GetUpdatesParam, GetUpdatesParamSerializer, SendPhotoParam, SendPhotoParamSerializer, SendAnimationParam, SendAnimationParamSerializer, SendVideoParam, SendVideoParamSerializer } from "telegram-bot-ts-types";
+import { Update, UpdateSerializer, SendMessageParam, SendMessageParamSerializer, GetUpdatesParam, GetUpdatesParamSerializer, SendPhotoParam, SendPhotoParamSerializer, SendAnimationParam, SendAnimationParamSerializer, SendVideoParam, SendVideoParamSerializer, EditMessageTextParam, EditMessageTextParamSerializer, MessageSerializer, Message } from "telegram-bot-ts-types";
 
 interface ApiMessageRemoteDatasource {
     getUpdates(params: GetUpdatesParam): Promise<Update[] | Failure>;
@@ -8,6 +8,7 @@ interface ApiMessageRemoteDatasource {
     sendPhoto(message: SendPhotoParam): Promise<any | Failure>;
     sendAnimation(message: SendAnimationParam): Promise<any | Failure>;
     sendVideo(message: SendVideoParam): Promise<any | Failure>;
+    editMessageText(message: EditMessageTextParam): Promise<any | Failure>;
 }
 
 class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
@@ -39,7 +40,7 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
         return updates;
     }
 
-    async sendMessage(message: SendMessageParam): Promise<any | Failure> {
+    async sendMessage(message: SendMessageParam): Promise<Message | Failure> {
         let response = await this.client.execute('sendMessage', SendMessageParamSerializer.toFormData(message));
         if (response instanceof Failure) {
             return response;
@@ -49,10 +50,10 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
             return new FailureApi();
         }
 
-        return response['result'];
+        return MessageSerializer.fromJson(JSON.parse(response)['result']);
     }
 
-    async sendAnimation(message: SendAnimationParam): Promise<any | Failure> {
+    async sendAnimation(message: SendAnimationParam): Promise<Message | Failure> {
         let response = await this.client.execute('sendAnimation', SendAnimationParamSerializer.toFormData(message));
         if (response instanceof Failure) {
             return response;
@@ -62,7 +63,7 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
             return new FailureApi();
         }
 
-        return response['result'];
+        return MessageSerializer.fromJson(response['result']);
     }
 
     async sendPhoto(message: SendPhotoParam): Promise<any | Failure> {
@@ -88,7 +89,20 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
             return new FailureApi();
         }
 
-        return response['result'];
+        return response;
+    }
+
+    async editMessageText(message: EditMessageTextParam): Promise<Message | Failure> {
+        let response = await this.client.execute('editMessageText', EditMessageTextParamSerializer.toFormData(message));
+        if (response instanceof Failure) {
+            return response;
+        }
+
+        if (!this.checkResponse(response)) {
+            return new FailureApi();
+        }
+
+        return MessageSerializer.fromJson(JSON.parse(response)['result']);
     }
 
     private checkResponse(response: string): boolean {

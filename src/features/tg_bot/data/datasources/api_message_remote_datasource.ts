@@ -4,12 +4,12 @@ import { Update, UpdateSerializer, SendMessageParam, SendMessageParamSerializer,
 
 interface ApiMessageRemoteDatasource {
     getUpdates(params: GetUpdatesParam): Promise<Update[] | Failure>;
-    sendMessage(message: SendMessageParam): Promise<any | Failure>;
-    sendPhoto(message: SendPhotoParam): Promise<any | Failure>;
-    sendAnimation(message: SendAnimationParam): Promise<any | Failure>;
-    sendVideo(message: SendVideoParam): Promise<any | Failure>;
-    editMessageText(message: EditMessageTextParam): Promise<any | Failure>;
-    editMessageReplyMarkup(message: EditMessageReplyMarkupParam): Promise<any | Failure>;
+    sendMessage(message: SendMessageParam): Promise<Message | Failure>;
+    sendPhoto(message: SendPhotoParam): Promise<Message | Failure>;
+    sendAnimation(message: SendAnimationParam): Promise<Message | Failure>;
+    sendVideo(message: SendVideoParam): Promise<Message | Failure>;
+    editMessageText(message: EditMessageTextParam): Promise<Message | Failure>;
+    editMessageReplyMarkup(message: EditMessageReplyMarkupParam): Promise<Message | Failure>;
 }
 
 class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
@@ -64,10 +64,10 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
             return new FailureApi();
         }
 
-        return MessageSerializer.fromJson(response['result']);
+        return MessageSerializer.fromJson(JSON.parse(response)['result']);
     }
 
-    async sendPhoto(message: SendPhotoParam): Promise<any | Failure> {
+    async sendPhoto(message: SendPhotoParam): Promise<Message | Failure> {
         let response = await this.client.execute('sendPhoto', SendPhotoParamSerializer.toFormData(message));
         if (response instanceof Failure) {
             return response;
@@ -77,10 +77,10 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
             return new FailureApi();
         }
 
-        return response['result'];
+        return MessageSerializer.fromJson(JSON.parse(response)['result']);
     }
 
-    async sendVideo(message: SendVideoParam): Promise<any | Failure> {
+    async sendVideo(message: SendVideoParam): Promise<Message | Failure> {
         let response = await this.client.execute('sendVideo', SendVideoParamSerializer.toFormData(message));
         if (response instanceof Failure) {
             return response;
@@ -90,7 +90,7 @@ class ApiMessageRemoteDatasourceImpl implements ApiMessageRemoteDatasource {
             return new FailureApi();
         }
 
-        return response;
+        return MessageSerializer.fromJson(JSON.parse(response)['result']);
     }
 
     async editMessageText(message: EditMessageTextParam): Promise<Message | Failure> {

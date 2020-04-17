@@ -1,7 +1,7 @@
 import { UseCase } from "../../../../core/usecases/usecase";
 import TelegramRepository from "../repositories/telegram_repostiry";
 import { Failure } from "../../../../core/failures";
-import { EditMessageReplyMarkupParam } from "telegram-bot-ts-types";
+import { EditMessageReplyMarkupParam, Message } from "telegram-bot-ts-types";
 
 class EditMessageReplyMarkup extends UseCase<any, EditMessageReplyMarkupParam> {
     telegramRepository: TelegramRepository;
@@ -11,7 +11,7 @@ class EditMessageReplyMarkup extends UseCase<any, EditMessageReplyMarkupParam> {
         this.telegramRepository = telegramRepository;
     }
 
-    async execute(message: EditMessageReplyMarkupParam): Promise<any | Failure> {
+    async execute(message: EditMessageReplyMarkupParam): Promise<Message | Failure> {
         return await this.telegramRepository.editMessageReplyMarkup(message);
     }
 }

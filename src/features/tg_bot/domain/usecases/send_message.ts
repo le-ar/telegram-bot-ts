@@ -1,7 +1,7 @@
 import { UseCase } from "../../../../core/usecases/usecase";
 import TelegramRepository from "../repositories/telegram_repostiry";
 import { Failure } from "../../../../core/failures";
-import { SendMessageParam } from "telegram-bot-ts-types";
+import { SendMessageParam, Message } from "telegram-bot-ts-types";
 
 class SendMessage extends UseCase<any, SendMessageParam> {
     telegramRepository: TelegramRepository;
@@ -11,7 +11,7 @@ class SendMessage extends UseCase<any, SendMessageParam> {
         this.telegramRepository = telegramRepository;
     }
 
-    async execute(message: SendMessageParam): Promise<any | Failure> {
+    async execute(message: SendMessageParam): Promise<Message | Failure> {
         return await this.telegramRepository.sendMessage(message);
     }
 }

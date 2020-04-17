@@ -39,7 +39,7 @@ class TelegramBot {
         this.initPubSub();
     }
 
-    async startLongPool() {
+    async startLongPoll() {
         let responseMe = await this.getMe();
         if (responseMe instanceof Failure) {
             if (responseMe instanceof FailureUnauthorized) {

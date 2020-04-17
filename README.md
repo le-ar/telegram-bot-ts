@@ -45,7 +45,7 @@ bot.onText(async function (message: Message) {
     });
 });
 
-bot.startLongPool();
+bot.startLongPoll();
 ```
 
 ## Receive callback from inline keyboard
